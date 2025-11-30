@@ -1,0 +1,246 @@
+rmi.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>EDRO | JusPrev™ — Cálculo de RMI (MVP Interativo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --edro-primary: #548E8D;
+      --edro-bg: #1f2e2e;
+      --edro-text-main: #ffffff;
+      --edro-soft: #c6fffa;
+      --card-bg: rgba(0,0,0,0.25);
+      --border-soft: rgba(255,255,255,0.18);
+      --shadow-soft: 0 12px 28px rgba(0,0,0,0.45);
+    }
+
+    body {
+      margin: 0;
+      padding: 26px;
+      background: radial-gradient(circle at top left, var(--edro-primary), var(--edro-bg));
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--edro-text-main);
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+      font-size: 1.65rem;
+      letter-spacing: 0.5px;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--edro-soft);
+      font-size: 1rem;
+      margin-bottom: 28px;
+      opacity: 0.9;
+    }
+
+    .card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 28px 24px;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-size: 0.94rem;
+      margin-bottom: 4px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.35);
+    }
+
+    button {
+      margin-top: 22px;
+      width: 100%;
+      padding: 15px;
+      font-size: 1.05rem;
+      background: var(--edro-soft);
+      color: #003c3a;
+      border: 2px solid #003c3a;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    button:hover {
+      background: #aef8f2;
+      transform: translateY(-2px);
+    }
+
+    .result-card {
+      margin-top: 32px;
+      padding: 20px;
+      background: rgba(0,0,0,0.30);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .result-title {
+      margin-top: 0;
+      font-size: 1.15rem;
+      font-weight: 650;
+    }
+
+    .trace {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      opacity: 0.85;
+      line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      color: var(--edro-soft);
+      text-decoration: none;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    .back-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>EDRO | JusPrev™</h1>
+  <h2>Cálculo de RMI — MVP Interativo (RF01)</h2>
+
+  <div class="card">
+
+    <label>Escolha a regra previdenciária:</label>
+    <select id="regra">
+      <option value="media100">Regra antiga — Média 100%</option>
+      <option value="media80">Regra antiga — Média 80%</option>
+      <option value="regra2019">Pós-Reforma (2019)</option>
+    </select>
+
+    <label>Média dos Salários de Contribuição (SC):</label>
+    <input type="number" id="media" placeholder="Ex.: 3500" />
+
+    <label>Tempo de Contribuição (em anos):</label>
+    <input type="number" id="tempo" placeholder="Ex.: 32" />
+
+    <label>Idade na Data do Cálculo:</label>
+    <input type="number" id="idade" placeholder="Ex.: 54" />
+
+    <button onclick="calcularRMI()">Calcular RMI</button>
+
+    <div id="resultado"></div>
+
+  </div>
+
+  <a href="index.html" class="back-link">⟵ Voltar à Página Inicial</a>
+
+  <script>
+    function calcularRMI() {
+      let regra = document.getElementById('regra').value;
+      let media = parseFloat(document.getElementById('media').value);
+      let tempo = parseFloat(document.getElementById('tempo').value);
+      let idade = parseFloat(document.getElementById('idade').value);
+
+      if (isNaN(media) || isNaN(tempo) || isNaN(idade)) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+
+      let rmi = 0;
+      let formula = "";
+      let coef = 0;
+
+      /* -----------------------------------
+         REGRA 1 — Média 100%
+      ----------------------------------- */
+      if (regra === "media100") {
+        rmi = media;
+        coef = 1.00;
+        formula =
+          "RMI = Média integral (100%)\n" +
+          "Justificativa normativa:\n" +
+          " • Regra antiga aplicava média integral dos SC.\n";
+      }
+
+      /* -----------------------------------
+         REGRA 2 — Média 80%
+      ----------------------------------- */
+      if (regra === "media80") {
+        rmi = media * 0.80;
+        coef = 0.80;
+        formula =
+          "RMI = Média × 80%\n" +
+          "Justificativa normativa:\n" +
+          " • Aplicação dos 80% maiores salários de contribuição.\n";
+      }
+
+      /* -----------------------------------
+         REGRA 3 — Pós-Reforma 2019
+         60% + 2% por ano acima de 20 anos
+      ----------------------------------- */
+      if (regra === "regra2019") {
+        let adicional = Math.max(0, tempo - 20) * 0.02;
+        coef = 0.60 + adicional;
+        rmi = media * coef;
+
+        formula =
+          "Coeficiente = 60% + (2% × anos acima de 20)\n" +
+          "Cálculo:\n" +
+          ` • Tempo acima de 20 anos: ${Math.max(0, tempo - 20)}\n` +
+          ` • Adicional: ${adicional.toFixed(2)}\n` +
+          "Justificativa normativa:\n" +
+          " • EC 103/2019 — Regras permanentes.\n";
+      }
+
+      /* -----------------------------------
+         Exibição do resultado
+      ----------------------------------- */
+      document.getElementById('resultado').innerHTML = `
+        <div class="result-card">
+
+          <div class="result-title">Resultado do Cálculo</div>
+
+          <p><strong>RMI:</strong> R$ ${rmi.toFixed(2)}</p>
+          <p><strong>Coeficiente aplicado:</strong> ${(coef * 100).toFixed(2)}%</p>
+
+          <div class="trace">
+            <strong>Rastreabilidade normativa (MVP):</strong>
+            ${formula}
+
+            Nota:
+            • Este MVP demonstra o cálculo básico da RMI.
+            • A versão completa aplicará bancos de índices,
+              dispositivos legais, regras históricas,
+              atualizações automáticas e memória de cálculo forense.
+          </div>
+
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>
