@@ -1,0 +1,700 @@
+index.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>EDRO | JusPrev™ — Inteligência Quantitativa Aplicada ao Direito Previdenciário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --edro-primary: #548E8D;      /* RGB(84,142,141) */
+      --edro-primary-dark: #356361;
+      --edro-primary-light: #7fb5b4;
+      --edro-bg: #1f2e2e;
+      --edro-card-bg: rgba(0, 0, 0, 0.22);
+      --edro-card-border: rgba(255, 255, 255, 0.12);
+      --edro-text-main: #ffffff;
+      --edro-text-soft: #e0f4f3;
+      --edro-chip-bg: rgba(255, 255, 255, 0.10);
+      --edro-shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.45);
+      --edro-radius-xl: 18px;
+      --edro-radius-xxl: 26px;
+      --edro-transition-fast: 0.18s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, var(--edro-primary-light), var(--edro-bg));
+      color: var(--edro-text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER FIXO */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(
+        to right,
+        rgba(31, 46, 46, 0.96),
+        rgba(84, 142, 141, 0.96)
+      );
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .branding {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 20% 20%, #c6fffa, var(--edro-primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      box-shadow: var(--edro-shadow-soft);
+    }
+
+    .branding-text h1 {
+      font-size: 1.02rem;
+      font-weight: 650;
+      line-height: 1.15;
+    }
+
+    .branding-text span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--edro-text-soft);
+      opacity: 0.9;
+    }
+
+    .header-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-size: 0.75rem;
+      color: var(--edro-text-soft);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #5df7b3;
+      box-shadow: 0 0 10px rgba(93, 247, 179, 0.8);
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+    main {
+      flex: 1;
+    }
+
+    .page-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 22px 18px 48px;
+    }
+
+    /* BOTÃO MVP */
+    .btn-center {
+      margin: 26px 0 28px;
+      text-align: center;
+    }
+
+    .btn-mvp {
+      background: #c6fffa;
+      color: #003c3a;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 1rem;
+      border: 2px solid #003c3a;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      transition: 0.2s;
+    }
+    .btn-mvp:hover {
+      background: #aef8f2;
+      transform: translateY(-2px);
+    }
+
+    .intro {
+      margin-bottom: 24px;
+    }
+
+    .intro-title {
+      font-size: 1.35rem;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+
+    .intro-subtitle {
+      font-size: 0.9rem;
+      color: var(--edro-text-soft);
+      max-width: 720px;
+      line-height: 1.4;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 0.74rem;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.16);
+      color: var(--edro-text-soft);
+    }
+
+    /* GRID DE SEÇÕES */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 880px) {
+      .sections-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* CARTÕES */
+    .card {
+      background: var(--edro-card-bg);
+      border-radius: var(--edro-radius-xl);
+      border: 1px solid var(--edro-card-border);
+      box-shadow: var(--edro-shadow-soft);
+      padding: 16px 18px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at top right,
+        rgba(197, 255, 250, 0.17),
+        transparent 55%
+      );
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-size: 1.0rem;
+      font-weight: 620;
+    }
+
+    .card-subtitle {
+      font-size: 0.78rem;
+      color: var(--edro-text-soft);
+      opacity: 0.9;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--edro-chip-bg);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: var(--edro-text-soft);
+    }
+
+    .requirements-list {
+      list-style: none;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .req-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.14);
+    }
+
+    .req-item:last-child {
+      border-bottom: none;
+      padding-bottom: 4px;
+    }
+
+    .req-label {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      align-self: flex-start;
+      white-space: nowrap;
+    }
+
+    .req-text {
+      font-size: 0.86rem;
+      line-height: 1.35;
+      color: var(--edro-text-main);
+    }
+
+    .req-hint {
+      font-size: 0.75rem;
+      color: var(--edro-text-soft);
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* CARD AUXILIAR */
+    .helper-card {
+      margin-top: 4px;
+      background: linear-gradient(
+        135deg,
+        rgba(84, 142, 141, 0.5),
+        rgba(0, 0, 0, 0.6)
+      );
+      border-radius: var(--edro-radius-xxl);
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: var(--edro-shadow-soft);
+    }
+
+    .helper-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .helper-text {
+      font-size: 0.78rem;
+      color: var(--edro-text-soft);
+      line-height: 1.4;
+    }
+
+    .helper-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .helper-tag {
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      transition: transform var(--edro-transition-fast), box-shadow var(--edro-transition-fast);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="branding">
+        <div class="logo-circle">ED</div>
+        <div class="branding-text">
+          <h1>EDRO | JusPrev™</h1>
+          <span>Inteligência Quantitativa Aplicada ao Direito Previdenciário</span>
+        </div>
+      </div>
+      <div class="header-pill">
+        <div class="status-dot"></div>
+        <span>Versão inicial para usuários-teste</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- BOTÃO RMI MVP -->
+  <div class="btn-center">
+    <a href="rmi.html" class="btn-mvp">Acessar Cálculo de RMI (MVP)</a>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main>
+    <div class="page-container">
+
+      <!-- INTRO -->
+      <section class="intro">
+        <div class="intro-title">
+          Requisitos estruturantes da plataforma JusPrev™
+        </div>
+
+        <p class="intro-subtitle">
+          Esta tela apresenta, de forma inteligível e rastreável, os requisitos
+          que orientam a concepção do EDRO | JusPrev™ — desde o que o produto
+          deve <strong>viabilizar</strong>, passando pelo que o sistema
+          efetivamente <strong>fará</strong>, até o que ele
+          <strong>deve ser</strong> em termos de confiabilidade, segurança,
+          auditabilidade e desempenho.
+        </p>
+
+        <div class="tag-row">
+          <span class="tag">Business Requirements</span>
+          <span class="tag">Functional Requirements</span>
+          <span class="tag">Non-Functional Requirements</span>
+          <span class="tag">Licenciamento SaaS</span>
+          <span class="tag">Rastreabilidade Normativa</span>
+        </div>
+      </section>
+
+      <!-- GRID DE SEÇÕES -->
+      <section class="sections-grid">
+        <!-- COLUNA ESQUERDA -->
+        <div class="column">
+
+          <!-- Requisitos de Negócio -->
+          <article class="card">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Requisitos de Negócio</div>
+                <div class="card-subtitle">
+                  O que o produto deve viabilizar no contexto previdenciário.
+                </div>
+              </div>
+              <span class="badge">Camada Estratégica</span>
+            </header>
+
+            <ul class="requirements-list">
+
+              <li class="req-item">
+                <div class="req-label">BN01</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar cálculos de concessão e revisão sob mais de uma regra.
+                  </p>
+                  <p class="req-hint">
+                    Permitir ao advogado comparar diferentes regimes previdenciários de forma instantânea.
+                  </p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">BN02</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar relatório técnico para peça de defesa.
+                  </p>
+                  <p class="req-hint">
+                    Memória de cálculo estruturada e rastreável para anexação em processos.
+                  </p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">BN03</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar comparação de cenários de aposentadoria.
+                  </p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">BN04</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar rastreabilidade normativa (mostrar qual norma gerou qual número).
+                  </p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">BN05</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar uso colaborativo e institucional (órgãos, escritórios).
+                  </p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">BN06</div>
+                <div>
+                  <p class="req-text">
+                    Viabilizar modelo de licenciamento SaaS (cobrança por usuário/mês + módulos).
+                  </p>
+                </div>
+              </li>
+
+            </ul>
+          </article>
+
+          <!-- Requisitos Funcionais -->
+          <article class="card">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Requisitos Funcionais</div>
+                <div class="card-subtitle">
+                  O que o sistema efetivamente fará na prática.
+                </div>
+              </div>
+              <span class="badge">Camada Operacional</span>
+            </header>
+
+            <ul class="requirements-list">
+
+              <li class="req-item">
+                <div class="req-label">RF01</div>
+                <div>
+                  <p class="req-text">RF01 – Calcular RMI conforme legislação vigente e versão selecionada.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF02</div>
+                <div>
+                  <p class="req-text">RF02 – Recalcular benefício para revisão com índices históricos corretos.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF03</div>
+                <div>
+                  <p class="req-text">RF03 – Gerar relatório técnico com memória de cálculo e base legal.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF04</div>
+                <div>
+                  <p class="req-text">RF04 – Simular múltiplos regimes e regras de transição.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF05</div>
+                <div>
+                  <p class="req-text">RF05 – Gerar checklist documental conforme o tipo de cálculo.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF06</div>
+                <div>
+                  <p class="req-text">RF06 – Registrar logs de uso, data, versão normativa aplicada.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF07</div>
+                <div>
+                  <p class="req-text">RF07 – Exportar resultados (PDF, DOCX, JSON).</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF09</div>
+                <div>
+                  <p class="req-text">RF09 – Alertar sobre mudanças normativas aplicáveis.</p>
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RF10</div>
+                <div>
+                  <p class="req-text">RF10 – Reprocessar cálculo com legislação de data passada.</p>
+                </div>
+              </li>
+
+            </ul>
+          </article>
+
+        </div>
+
+        <!-- COLUNA DIREITA -->
+        <div class="column">
+
+          <!-- Requisitos Não Funcionais -->
+          <article class="card">
+            <header class="card-header">
+              <div>
+                <div class="card-title">Requisitos Não Funcionais</div>
+                <div class="card-subtitle">
+                  O que o sistema deve ser em termos de qualidade, segurança e desempenho.
+                </div>
+              </div>
+              <span class="badge">Camada Qualitativa</span>
+            </header>
+
+            <ul class="requirements-list">
+
+              <li class="req-item">
+                <div class="req-label">RNF01</div>
+                <div class="req-text">
+                  RNF01 – Confiável: variação máxima de 0,01% nos cálculos.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF02</div>
+                <div class="req-text">
+                  RNF02 – Seguro: LGPD/GDPR, criptografia, autenticação forte.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF03</div>
+                <div class="req-text">
+                  RNF03 – Auditável: ID único e trilha de auditoria.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF04</div>
+                <div class="req-text">
+                  RNF04 – Performático: 95% das respostas ≤ 2s.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF05</div>
+                <div class="req-text">
+                  RNF05 – Modular: inclusão de novos benefícios sem reescrever o core.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF06</div>
+                <div class="req-text">
+                  RNF06 – SaaS-ready: atualizações sem downtime.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF07</div>
+                <div class="req-text">
+                  RNF07 – Internacionalizável: camada de idioma separada.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF08</div>
+                <div class="req-text">
+                  RNF08 – Reprodutível: mesmos dados, mesmo resultado.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF09</div>
+                <div class="req-text">
+                  RNF09 – Transparência: todo cálculo mostra o fator usado.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF10</div>
+                <div class="req-text">
+                  RNF10 – Portável: roda 100% no navegador.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF11</div>
+                <div class="req-text">
+                  RNF11 – Exportável: HTML imprimível e PDF.
+                </div>
+              </li>
+
+              <li class="req-item">
+                <div class="req-label">RNF12</div>
+                <div class="req-text">
+                  RNF12 – Língua: português jurídico padrão.
+                </div>
+              </li>
+
+            </ul>
+
+          </article>
+
+          <!-- Card Auxiliar -->
+          <article class="helper-card">
+            <div class="helper-title">
+              Como esta tela apoia o processo decisório do advogado
+            </div>
+
+            <p class="helper-text">
+              A organização dos requisitos em três camadas — Negócio, Funcional e
+              Não Funcional — permite ao advogado compreender, em poucos segundos,
+              não apenas o que o sistema faz, mas principalmente por que ele é
+              confiável, rastreável e juridicamente robusto.
+            </p>
+
+            <div class="helper-tags">
+              <span class="helper-tag">Rastreabilidade</span>
+              <span class="helper-tag">Confiabilidade Numérica</span>
+              <span class="helper-tag">Padrão EDRO</span>
+            </div>
+          </article>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
